@@ -1,2 +1,5 @@
-require("!style!css!./css/main.css");
-document.write(require("./js/main.js"));
+jQuery = require("jquery");
+moment = require("moment");
+require("bootstrap-webpack");
+require("./css/main.css");
+require("./js/main.js");
