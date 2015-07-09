@@ -1,7 +1,7 @@
 module.exports = {
     entry: "./entry.js",
     output: {
-        path: __dirname,
+        path: "./build",
         filename: "bundle.js"
     },
     module: {
@@ -11,7 +11,9 @@ module.exports = {
             { test: /\.woff2$/,   loader: "url-loader?limit=10000&mimetype=application/font-woff2" },
             { test: /\.ttf$/,    loader: "file-loader" },
             { test: /\.eot$/,    loader: "file-loader" },
-            { test: /\.svg$/,    loader: "file-loader" }
+            { test: /\.svg$/,    loader: "file-loader" },
+            { test: /\.coffee$/, loader: "coffee-loader" },
+            { test: /\.scss$/, loader: "style!css!sass?sourceMap" }
         ]
     }
 };
