@@ -22,16 +22,30 @@ window.getStatus = (callback, useStub=false) =>
     callback(stub)
   else
     url = [window.SERVER_HOST, 'status'].join('/')
-    $.get url, (response) =>
+    promise = $.get url
+
+    promise.done (response) ->
       callback JSON.parse(response)
 
-window.current_status = 'stopped'
+    promise.fail (response) ->
+      callback
+        state: 'no_connection'
+        next_run: -1
+        next_tasks: []
+
+window.STATES =
+  'no_connection': 'No connection. Retry every second'
+  'stopped': 'Stopped. Click to start'
+  'running': 'Running. Click to stop'
+
+window.current_status = 'no_connection'
+
 
 window.updateHeader = () =>
   getStatus (status_response) =>
+    window.current_status = current_status = status_response.state
 
-    status_button_text = status_response.state
-    window.current_status = status_response.state
+    status_button_text = window.STATES[current_status]
     status_button_class = if status_response.state == 'running'
       'btn-success'
     else
@@ -41,20 +55,24 @@ window.updateHeader = () =>
     status_button.text(status_button_text)
     status_button.removeClass('btn-success btn-warning')
     status_button.addClass(status_button_class)
-    status_button.attr('disabled', false)
 
-    now = moment()
-    next_run_time = moment().add(status_response.next_run, 'seconds')
-    next_run_task_links = status_response.next_tasks.map (t) ->
-      "<a href='#'> #{t.name} </a>"
+    if current_status == 'no_connection'
+      status_button.attr('disabled', true)
+      $('#next_run_txt').html('')
+    else
+      status_button.attr('disabled', false)
+      now = moment()
+      next_run_time = moment().add(status_response.next_run, 'seconds')
+      next_run_task_links = status_response.next_tasks.map (t) ->
+        "<a href='#'> #{t.name} </a>"
 
-    next_run_text = """
-      Next run of tasks
-      #{next_run_task_links}
-      in #{moment.preciseDiff(now, next_run_time)}
-    """
+      next_run_text = """
+        Next run of tasks
+        #{next_run_task_links}
+        in #{moment.preciseDiff(now, next_run_time)}
+      """
 
-    $('#next_run_txt').html(next_run_text)
+      $('#next_run_txt').html(next_run_text)
 
 
 $(document).ready ->
