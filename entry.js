@@ -7,5 +7,8 @@ require("./css/main.scss");
 
 RecentHistory = require("./js/recent_history.coffee");
 require("./js/header.coffee");
+TaskForm = require("./js/task_form.coffee");
+TaskRun = require("./js/task_run.coffee");
+TaskList = require("./js/task_list.coffee");
 
 require("./js/main.coffee");

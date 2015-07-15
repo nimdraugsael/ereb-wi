@@ -3,7 +3,7 @@
 <head>
   <title> ereb wi </title>
   <script type="text/javascript">
-    window.SERVER_HOST = 'http://localhost:8888'
+    window.SERVER_HOST = 'http://r2d2.int.avs.io:8888'
   </script>
   <script src="bundle.js"></script>
 </head>
@@ -15,9 +15,12 @@
         <a class="navbar-brand" href="#">Webcron wi</a>
       </div>
       <div class="collapse navbar-collapse">
-        <button type="button" id="running_button" data-loading-text="Loading..." class="btn btn-primary navbar-btn" autocomplete="off">
+        <a type="button" href="#/task_list" class="btn navbar-btn"> Task list </a>
+
+        <button type="button" id="running_button" class="btn btn-primary navbar-btn" autocomplete="off">
           Running
         </button>
+
 
         <p id="next_run_txt" class="navbar-text wi__next_run_text navbar-right" >
         <p>
@@ -26,7 +29,6 @@
     </div><!-- /.container-fluid -->
   </nav>
   <div id="page_content" class="well">
-    <h1 id="test"> </h1>
   </div>
 </body>
 </html>

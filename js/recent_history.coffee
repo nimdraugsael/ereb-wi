@@ -2,9 +2,8 @@ class RecentHistory
 
   constructor: (wrapper) ->
     @wrapper = wrapper
-    @update()
 
-  update: () ->
+  render: () ->
     @fetch ((data) =>
       @updateTemplate data
     ), false
@@ -13,17 +12,22 @@ class RecentHistory
     rows = data.map (run) =>
       """
         <tr>
-          <td> #{run.task_id} </td>
+          <td> <a href="#/tasks/#{run.task_id}"> #{run.task_id} </a> </td>
           <td> #{run.started_at} </td>
           <td> #{ if run.finished_at? then run.finished_at else run.current } </td>
           <td> #{ if run.exit_code == 0 then 'Success' else 'Fail' } </td>
+          <td> <a href="#/tasks/#{run.task_id}/runs/#{run.task_run_id}"> More </a> </td>
         <tr>
       """
 
     html = [
+      "<div class='row'>",
+      "<div class='col-md-6 col-md-offset-3'>",
       "<table class='table'>",
       rows.join(''),
-      "</table>"
+      "</table>",
+      "</div>",
+      "</div>"
     ].join('')
 
     $(@wrapper).html html
@@ -69,4 +73,3 @@ class RecentHistory
 
 
 module.exports = RecentHistory
-
