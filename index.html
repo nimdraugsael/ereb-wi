@@ -3,9 +3,12 @@
 <head>
   <title> ereb wi </title>
   <script type="text/javascript">
-    window.SERVER_HOST = 'http://r2d2.int.avs.io:8888'
+    production = 'http://r2d2.int.avs.io:8888'
+    development = 'http://localhost:8888'
+
+    window.SERVER_HOST = production
   </script>
-  <script src="bundle.js"></script>
+  <script src="build/bundle.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-default">

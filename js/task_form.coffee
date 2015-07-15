@@ -3,8 +3,8 @@ class TaskForm
   constructor: (wrapper) ->
     @wrapper = wrapper
 
-  render: (taskId) ->
-    @fetch taskId, (data) =>
+  render: (@taskId) ->
+    @fetch @taskId, (data) =>
       @updateTemplate data
       @initEvents()
 
@@ -67,7 +67,7 @@ class TaskForm
           <td> #{run.started_at} </td>
           <td> #{ if run.finished_at? then run.finished_at else run.current } </td>
           <td> #{ if run.exit_code == 0 then 'Success' else 'Fail' } </td>
-          <td> <a href="#"> More </a> </td>
+          <td> <a href="#/tasks/#{@taskId}/runs/#{run.id}"> More </a> </td>
         <tr>
       """
 
