@@ -33,14 +33,6 @@ window.getStatus = (callback, useStub=false) =>
         next_run: -1
         next_tasks: []
 
-window.STATES =
-  'no_connection': 'No connection. Retry every second'
-  'stopped': 'Stopped. Click to start'
-  'running': 'Running. Click to stop'
-
-window.current_status = 'no_connection'
-
-
 window.updateHeader = () =>
   getStatus (status_response) =>
     window.current_status = current_status = status_response.state

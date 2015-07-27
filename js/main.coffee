@@ -1,8 +1,27 @@
+window.STATES =
+  'no_connection': 'No connection. Retry every second'
+  'stopped': 'Stopped. Click to start'
+  'running': 'Running. Click to stop'
+
+window.current_status = 'no_connection'
+
 $(document).ready ->
+  defaultHost = 'http://localhost:8888';
+  window.SERVER_HOST = Cookies.get('host') or defaultHost
+
   recentHistory = new RecentHistory('#page_content')
   taskList = new TaskList('#page_content')
   taskForm = new TaskForm('#page_content')
   taskRun = new TaskRun('#page_content')
+
+  $('#host_input').val(window.SERVER_HOST)
+
+  $('#reconnect_button').click ->
+    Cookies.set('host', $('#host_input').val())
+    window.SERVER_HOST = $('#host_input').val()
+    $('#page_content').html('')
+    window.current_status = 'no_connection'
+    document.location.hash = '#/'
 
   routes =
     '/': () ->

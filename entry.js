@@ -10,5 +10,6 @@ require("./js/header.coffee");
 TaskForm = require("./js/task_form.coffee");
 TaskRun = require("./js/task_run.coffee");
 TaskList = require("./js/task_list.coffee");
+Cookies = require("./js/cookies.coffee");
 
 require("./js/main.coffee");
