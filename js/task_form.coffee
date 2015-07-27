@@ -14,8 +14,14 @@ class TaskForm
       data =
         cron_schedule: $('#cron_schedule').val()
         cmd: $('#cmd').val()
-      task_id = $('#task_id').val()
-      @updateTask(task_id, data)
+      taskId = $('#task_id').val()
+      @updateTask(taskId, data)
+
+    $('#task_form__delete').click (e) =>
+      e.preventDefault()
+      taskId = $('#task_id').val()
+      @deleteTask taskId, =>
+        document.location.hash = '#/task_list'
 
   updateTask: (taskId, data) ->
     url = [window.SERVER_HOST, 'tasks', taskId].join('/')
@@ -38,7 +44,14 @@ class TaskForm
       """
       $(@wrapper).prepend(html)
 
+  deleteTask: (taskId, callback) ->
+    url = [window.SERVER_HOST, 'tasks', taskId].join('/')
+    promise = $.ajax
+      url: url
+      method: 'DELETE'
 
+    promise.done (response) =>
+      callback()
 
   updateTemplate: (data) ->
     form =
@@ -56,6 +69,7 @@ class TaskForm
                   value="#{data.config.cmd}" placeholder="Cmd">
               </div>
               <button id="task_form__submit" type="submit" class="btn btn-default">Update</button>
+              <button id="task_form__delete" class="btn btn-danger">Delete</button>
             </form>
           </div>
         </div>

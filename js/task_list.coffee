@@ -1,4 +1,6 @@
 class TaskList
+  defaultSchedule: '* */1 * * *'
+  defaultCmd: 'echo'
 
   constructor: (wrapper) ->
     @wrapper = wrapper
@@ -6,6 +8,16 @@ class TaskList
   render: (taskId, taskRunId) ->
     @fetch taskId, taskRunId, (data) =>
       @updateTemplate data
+      @initEvents()
+
+  initEvents: ->
+    $('#new_task_form__submit').click (e) =>
+      console.log(@)
+      e.preventDefault()
+      newTaskName = $('#new_task_name').val()
+      unless newTaskName == ''
+        @createTask newTaskName, =>
+          document.location.hash = ['#/tasks', newTaskName].join('/')
 
   updateTemplate: (data) ->
     rows = data.map (task) =>
@@ -34,6 +46,18 @@ class TaskList
             </table>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-3">
+            <form id='task_form'>
+              <div class="form-group">
+                <label for="task_name">New task name</label>
+                <input type="text" class="form-control" id="new_task_name" placeholder="Name">
+              </div>
+              <button id="new_task_form__submit" type="submit" class="btn btn-default">Create</button>
+            </form>
+          </div>
+        </div>
       """
 
     $(@wrapper).html html
@@ -55,12 +79,20 @@ class TaskList
       promise = $.get url
 
       promise.done (response) ->
-
         callback JSON.parse(response)
 
       promise.fail (response) ->
         callback []
 
+  createTask: (name, callback) ->
+    url = [window.SERVER_HOST, 'tasks'].join('/')
+    promise = $.post url, JSON.stringify
+      task_id: name
+      cmd: [@defaultCmd, name].join(' ')
+      cron_schedule: @defaultSchedule
+
+    promise.done (response) ->
+      callback()
 
 
 module.exports = TaskList
