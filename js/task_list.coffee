@@ -54,7 +54,7 @@ class TaskList
                 <label for="task_name">New task name</label>
                 <input type="text" class="form-control" id="new_task_name" placeholder="Name">
               </div>
-              <button id="new_task_form__submit" type="submit" class="btn btn-default">Create</button>
+              <butto  n id="new_task_form__submit" type="submit" class="btn btn-default">Create</button>
             </form>
           </div>
         </div>

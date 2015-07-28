@@ -14,14 +14,17 @@ class TaskForm
       data =
         cron_schedule: $('#cron_schedule').val()
         cmd: $('#cmd').val()
-      taskId = $('#task_id').val()
-      @updateTask(taskId, data)
+      @updateTask(@taskId, data)
 
     $('#task_form__delete').click (e) =>
       e.preventDefault()
-      taskId = $('#task_id').val()
-      @deleteTask taskId, =>
+      @deleteTask @taskId, =>
         document.location.hash = '#/task_list'
+
+    $('#task_form__manual_run').click (e) =>
+      e.preventDefault()
+      @runTask @taskId, =>
+        @render(@taskId)
 
   updateTask: (taskId, data) ->
     url = [window.SERVER_HOST, 'tasks', taskId].join('/')
@@ -53,7 +56,16 @@ class TaskForm
     promise.done (response) =>
       callback()
 
+  runTask: (taskId, callback) ->
+    url = [window.SERVER_HOST, 'tasks', taskId, 'run'].join('/')
+    promise = $.ajax
+      url: url
+
+    promise.done (response) =>
+      callback()
+
   updateTemplate: (data) ->
+    console.log(data)
     form =
       """
         <div class="row">
@@ -69,6 +81,7 @@ class TaskForm
                   value="#{data.config.cmd}" placeholder="Cmd">
               </div>
               <button id="task_form__submit" type="submit" class="btn btn-default">Update</button>
+              <button id="task_form__manual_run" class="btn btn-default"> Run now! </button>
               <button id="task_form__delete" class="btn btn-danger">Delete</button>
             </form>
           </div>
@@ -80,7 +93,7 @@ class TaskForm
         <tr>
           <td> #{run.started_at} </td>
           <td> #{ if run.finished_at? then run.finished_at else run.current } </td>
-          <td> #{ if run.exit_code == 0 then 'Success' else 'Fail' } </td>
+          <td> #{ helpers.task_state_for_exit_code(run.exit_code) } </td>
           <td> <a href="#/tasks/#{@taskId}/runs/#{run.id}"> More </a> </td>
         <tr>
       """

@@ -15,7 +15,7 @@ class RecentHistory
           <td> <a href="#/tasks/#{run.task_id}"> #{run.task_id} </a> </td>
           <td> #{run.started_at} </td>
           <td> #{ if run.finished_at? then run.finished_at else run.current } </td>
-          <td> #{ if run.exit_code == 0 then 'Success' else 'Fail' } </td>
+          <td> #{ helpers.task_state_for_exit_code(run.exit_code) } </td>
           <td> <a href="#/tasks/#{run.task_id}/runs/#{run.task_run_id}"> More </a> </td>
         <tr>
       """

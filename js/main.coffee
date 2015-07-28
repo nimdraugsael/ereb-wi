@@ -3,6 +3,12 @@ window.STATES =
   'stopped': 'Stopped. Click to start'
   'running': 'Running. Click to stop'
 
+window.helpers =
+  task_state_for_exit_code: (state) ->
+    return 'Running' unless state?
+    return 'Success' if state == 0
+    'Fail'
+
 window.current_status = 'no_connection'
 
 $(document).ready ->
