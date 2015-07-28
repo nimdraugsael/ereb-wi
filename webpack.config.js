@@ -2,6 +2,7 @@ module.exports = {
     entry: "./entry.js",
     output: {
         path: "./build",
+        publicPath: "/build/",
         filename: "bundle.js"
     },
     module: {
